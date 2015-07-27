@@ -23,6 +23,7 @@
 
 
 #define myAppLink @"itms://itunes.apple.com/us/app/apple-store/id375380948?mt=8"
+#define RateUspopupTime 300
 
 @implementation GameClassic20
 
@@ -345,7 +346,13 @@
         //
         
         if([finished1 isEqual:@"YES"] && [finished2 isEqual:@"YES"] && [finished3 isEqual:@"YES"] && [finished4 isEqual:@"YES"] && [finished5 isEqual:@"YES"]){
-            [rowTimer invalidate];
+            if (rowTimer !=NULL) {
+                if (rowTimer.isValid) {
+                    [rowTimer invalidate];
+                    rowTimer = NULL;
+                }
+            }
+            
             play = @"YES";
             [self checkIfWon];
         }
@@ -544,7 +551,13 @@
         //
         
         if([finished1 isEqual:@"YES"] && [finished2 isEqual:@"YES"] && [finished3 isEqual:@"YES"] && [finished4 isEqual:@"YES"] && [finished5 isEqual:@"YES"]){
-            [rowTimer invalidate];
+            NSLog(@"%@",rowTimer);
+            if (rowTimer !=NULL) {
+                if (rowTimer.isValid) {
+                    [rowTimer invalidate];
+                    rowTimer = NULL;
+                }
+            }
             play = @"YES";
             [self checkIfWon];
         }
@@ -3833,12 +3846,14 @@
             
             if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
                 if (!rowTimer.isValid) {
+                     if (rowTimer ==NULL) {
                     rowTimer = [NSTimer scheduledTimerWithTimeInterval:0.004 target:self selector:@selector(moveRow) userInfo:nil repeats:YES];
+                     }
                 }
             }else{
-               // if (!rowTimer.isValid) {
-                rowTimer = [NSTimer scheduledTimerWithTimeInterval:0.008 target:self selector:@selector(moveRow) userInfo:nil repeats:YES];
-                //}
+                if (rowTimer ==NULL) {
+                    rowTimer = [NSTimer scheduledTimerWithTimeInterval:0.008 target:self selector:@selector(moveRow) userInfo:nil repeats:YES];
+                }
             }
         }
     }
@@ -4621,10 +4636,10 @@
 
 -(void)changeLbl{
     rateCounter ++;
-    NSLog(@"%d",rateCounter);
     NSUserDefaults *pref = [NSUserDefaults standardUserDefaults];
-    
-    if (rateCounter >=60 && !popupshow && ![[pref objectForKey:@"RateUsLike"] isEqualToString:@"1"]) {
+    [pref setValue:@"0" forKey:@"rateMyapp"];
+    [pref synchronize];
+    if (rateCounter >=RateUspopupTime && !popupshow && ![[pref objectForKey:@"rateMyapp"] isEqualToString:@"1"]) {
         rateCounter=0;
         popupshow = true;
         obj.customtag = @"301";
@@ -4714,6 +4729,9 @@
 #pragma mark - rate us popupRate delegate
 -(void)btnRateYesClick:(NSString *)tag{
     rateCounter =0;
+    NSUserDefaults *pref = [NSUserDefaults standardUserDefaults];
+    [pref setValue:@"1" forKey:@"rateMyapp"];
+    [pref synchronize];
         NSString *iTunesLink = myAppLink;
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:iTunesLink]];
         [self dismissPopupViewControllerWithanimationType:MJPopupViewAnimationFade];
