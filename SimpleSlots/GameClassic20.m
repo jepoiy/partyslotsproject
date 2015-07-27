@@ -4672,8 +4672,8 @@
 -(void)changeLbl{
     rateCounter ++;
     NSUserDefaults *pref = [NSUserDefaults standardUserDefaults];
-    [pref setValue:@"0" forKey:@"rateMyapp"];
-    [pref synchronize];
+//    [pref setValue:@"0" forKey:@"rateMyapp"];
+//    [pref synchronize];
     if (rateCounter >=RateUspopupTime && !popupshow && ![[pref objectForKey:@"rateMyapp"] isEqualToString:@"1"]) {
         rateCounter=0;
         popupshow = true;
