@@ -41,7 +41,7 @@
                            @[@"K", @"J", @"Lemon", @"Q", @"Diamond", @"Bonus", @"A", @"Star", @"7", @"J", @"Lemon", @"7", @"K", @"A", @"Q", @"K", @"Diamond", @"Lemon", @"J", @"Wild"],
                            @[@"Lemon", @"7", @"K", @"A", @"Q", @"K", @"Diamond", @"Bonus", @"J", @"Star", @"J", @"7", @"Diamond", @"Bonus", @"A", @"J", @"Wild", @"Star", @"Q", @"K"],
                            @[@"Bonus", @"A", @"7", @"Diamond", @"K", @"Q", @"J", @"Lemon", @"Wild", @"Star", @"K", @"Star", @"Q", @"Lemon", @"J", @"Diamond", @"A", @"Bonus", @"7", @"Star"],
-
+                           
                            ];
     
     CGSize smallImageSize;
@@ -57,15 +57,15 @@
     
     for (int i=0; i<20; i++) {
         NSString* item_name = [NSString stringWithFormat:@"%@item_%@@2x", gameIdString, slotItems[wheel][i]];
-//        NSLog(@"%@", item_name);
+        //        NSLog(@"%@", item_name);
         UIImage* img_item = [UIImage imageForDeviceForName:item_name];
         [img_item drawInRect:CGRectMake(0, i*smallImageSize.height, smallImageSize.width, smallImageSize.height)];
     }
-
+    
     UIImage *destImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return destImage;
- }
+}
 
 #ifdef DONT_SHOW_APPLOVIN_ON_EACH_SCREEN
 - (void)viewDidAppear:(BOOL)animated
@@ -73,11 +73,12 @@
     //    This empty method prevents the display of AppLovin interstitial on each re-appearance of the game screen.
     //    If you'd rather want this, comment out this method
     
-    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(nextAutospin)
                                                  name:@"1005"
                                                object:nil];
+    
+    
     
 }
 #endif
@@ -89,7 +90,7 @@
 
 - (IBAction)coinsView:(id)sender{
     [BaseViewController showCoinsView:sender inController:self];
-        
+    
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationDuration:0.5];
     viewMoreCoins.alpha = 0.0;
@@ -97,9 +98,9 @@
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-	
-	NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-	NSString *connectState = [prefs stringForKey:@"connectState"];
+    
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    NSString *connectState = [prefs stringForKey:@"connectState"];
     
     //NSLog(@"connectState: %@", connectState);
     
@@ -226,7 +227,7 @@
                 finished2 = @"YES";
             }else{
                 [BaseViewController playSoundEffect:kSoundFinishedSpin];
-
+                
                 finished2 = @"YES";
             }
         }else{
@@ -256,7 +257,7 @@
                 finished3 = @"YES";
             }else{
                 [BaseViewController playSoundEffect:kSoundFinishedSpin];
-
+                
                 finished3 = @"YES";
             }
         }else{
@@ -289,7 +290,7 @@
                 finished4 = @"YES";
             }else{
                 [BaseViewController playSoundEffect:kSoundFinishedSpin];
-
+                
                 finished4 = @"YES";
             }
         }else{
@@ -322,7 +323,7 @@
                 finished5 = @"YES";
             }else{
                 [BaseViewController playSoundEffect:kSoundFinishedSpin];
-
+                
                 finished5 = @"YES";
             }
         }else{
@@ -368,7 +369,7 @@
                 finished1 = @"YES";
             }else{
                 [BaseViewController playSoundEffect:kSoundFinishedSpin];
-
+                
                 
                 finished1 = @"YES";
             }
@@ -429,7 +430,7 @@
                 finished2 = @"YES";
             }else{
                 [BaseViewController playSoundEffect:kSoundFinishedSpin];
-
+                
                 finished2 = @"YES";
             }
         }else{
@@ -460,7 +461,7 @@
                 finished3 = @"YES";
             }else{
                 [BaseViewController playSoundEffect:kSoundFinishedSpin];
-
+                
                 finished3 = @"YES";
             }
         }else{
@@ -493,7 +494,7 @@
                 finished4 = @"YES";
             }else{
                 [BaseViewController playSoundEffect:kSoundFinishedSpin];
-
+                
                 finished4 = @"YES";
             }
         }else{
@@ -527,7 +528,7 @@
                 finished5 = @"YES";
             }else{
                 [BaseViewController playSoundEffect:kSoundFinishedSpin];
-
+                
                 finished5 = @"YES";
             }
         }else{
@@ -554,14 +555,16 @@
         //
         
         if([finished1 isEqual:@"YES"] && [finished2 isEqual:@"YES"] && [finished3 isEqual:@"YES"] && [finished4 isEqual:@"YES"] && [finished5 isEqual:@"YES"]){
-            NSLog(@"%@",rowTimer);
+            
+            play = @"YES";
             if (rowTimer !=NULL) {
                 if (rowTimer.isValid) {
                     [rowTimer invalidate];
                     rowTimer = NULL;
+                    
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"1005" object:nil userInfo:nil];
                 }
             }
-            play = @"YES";
             [self checkIfWon];
         }
         
@@ -689,17 +692,17 @@
     NSString *row3CurrentWinAfter = [winLine3 objectAtIndex:localPos3After];
     NSString *row4CurrentWinAfter = [winLine4 objectAtIndex:localPos4After];
     NSString *row5CurrentWinAfter = [winLine5 objectAtIndex:localPos5After];
-
+    
     //NSLog(@"-1      %@      | %@       | %@       | %@       | %@", row1CurrentWinBefore, row2CurrentWinBefore, row3CurrentWinBefore, row4CurrentWinBefore, row5CurrentWinBefore);
     //NSLog(@"win     %@      | %@       | %@       | %@       | %@", row1CurrentWin, row2CurrentWin, row3CurrentWin, row4CurrentWin, row5CurrentWin);
     //NSLog(@"+1      %@      | %@       | %@       | %@       | %@", row1CurrentWinAfter, row2CurrentWinAfter, row3CurrentWinAfter, row4CurrentWinAfter, row5CurrentWinAfter);
     
-    /* 
-    
+    /*
+     
      [row1CurrentWinBefore isEqual:@"J"] || [row1CurrentWinBefore isEqual:@"Q"]  ||[row1CurrentWinBefore isEqual:@"Lemon"] || [row1CurrentWinBefore isEqual:@"7"]
      
-    --- WIN TABLE
-    */
+     --- WIN TABLE
+     */
     
     // pay tables
     
@@ -713,10 +716,10 @@
     
     // manage bonus
 #pragma mark init bonus
-//#warning !!!!!!!        bonusCount should be 0; it's changed here only to help with debugging
-//    int bonusCount = 3;
+    //#warning !!!!!!!        bonusCount should be 0; it's changed here only to help with debugging
+    //    int bonusCount = 3;
     int bonusCount = 0;
-//#warning !!!!!!!        uncomment the above line
+    //#warning !!!!!!!        uncomment the above line
     totalWinAmount = 0;
     
     if([row1CurrentWinBefore isEqual:@"Bonus"]){
@@ -878,7 +881,7 @@
             NSString *winAmount = [payout_5 objectAtIndex:grabCoins];
             [showWinData addObject:@"3,5"];
             totalWinAmount = totalWinAmount + [winAmount intValue];
-
+            
         }else{
             //Object 4 Win
             if(([row1CurrentWinAfter isEqual:row2CurrentWinAfter] || [row2CurrentWinAfter isEqual:@"Wild"]) && ([row1CurrentWinAfter isEqual:row3CurrentWinAfter] || [row3CurrentWinAfter isEqual:@"Wild"]) && ([row1CurrentWinAfter isEqual:row4CurrentWinAfter] || [row4CurrentWinAfter isEqual:@"Wild"])){
@@ -887,7 +890,7 @@
                 NSString *winAmount = [payout_4 objectAtIndex:grabCoins];
                 [showWinData addObject:@"3,4"];
                 totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                
             }else{
                 //Object 3 Win
                 if(([row1CurrentWinAfter isEqual:row2CurrentWinAfter] || [row2CurrentWinAfter isEqual:@"Wild"]) && ([row1CurrentWinAfter isEqual:row3CurrentWinAfter] || [row3CurrentWinAfter isEqual:@"Wild"])){
@@ -896,7 +899,7 @@
                     NSString *winAmount = [payout_3 objectAtIndex:grabCoins];
                     [showWinData addObject:@"3,3"];
                     totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                    
                 }else{
                     //Object 2 Win
                     
@@ -908,7 +911,7 @@
                             NSString *winAmount = [payout_2 objectAtIndex:grabCoins];
                             [showWinData addObject:@"3,2"];
                             totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                            
                         }else{
                             //NSLog(@"-- no win");
                         }
@@ -929,7 +932,7 @@
             NSString *winAmount = [payout_5 objectAtIndex:grabCoins];
             [showWinData addObject:@"4,5"];
             totalWinAmount = totalWinAmount + [winAmount intValue];
-
+            
         }else{
             //Object 4 Win
             if(([row1CurrentWinBefore isEqual:row2CurrentWin] || [row2CurrentWin isEqual:@"Wild"]) && ([row1CurrentWinBefore isEqual:row3CurrentWinAfter] || [row3CurrentWinAfter isEqual:@"Wild"]) && ([row1CurrentWinBefore isEqual:row4CurrentWin] || [row4CurrentWin isEqual:@"Wild"])){
@@ -938,7 +941,7 @@
                 NSString *winAmount = [payout_4 objectAtIndex:grabCoins];
                 [showWinData addObject:@"4,4"];
                 totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                
             }else{
                 //Object 3 Win
                 if(([row1CurrentWinBefore isEqual:row2CurrentWin] || [row2CurrentWin isEqual:@"Wild"]) && ([row1CurrentWinBefore isEqual:row3CurrentWinAfter] || [row3CurrentWinAfter isEqual:@"Wild"])){
@@ -947,7 +950,7 @@
                     NSString *winAmount = [payout_3 objectAtIndex:grabCoins];
                     [showWinData addObject:@"4,3"];
                     totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                    
                 }else{
                     //Object 2 Win
                     
@@ -959,7 +962,7 @@
                             NSString *winAmount = [payout_2 objectAtIndex:grabCoins];
                             [showWinData addObject:@"4,2"];
                             totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                            
                         }else{
                             //NSLog(@"-- no win");
                         }
@@ -980,7 +983,7 @@
             NSString *winAmount = [payout_5 objectAtIndex:grabCoins];
             [showWinData addObject:@"5,5"];
             totalWinAmount = totalWinAmount + [winAmount intValue];
-
+            
         }else{
             //Object 4 Win
             if(([row1CurrentWinAfter isEqual:row2CurrentWin] || [row2CurrentWin isEqual:@"Wild"]) && ([row1CurrentWinAfter isEqual:row3CurrentWinBefore] || [row3CurrentWinBefore isEqual:@"Wild"]) && ([row1CurrentWinAfter isEqual:row4CurrentWin] || [row4CurrentWin isEqual:@"Wild"])){
@@ -989,16 +992,16 @@
                 NSString *winAmount = [payout_4 objectAtIndex:grabCoins];
                 [showWinData addObject:@"5,4"];
                 totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                
             }else{
                 //Object 3 Win
-                 if(([row1CurrentWinAfter isEqual:row2CurrentWin] || [row2CurrentWin isEqual:@"Wild"]) && ([row1CurrentWinAfter isEqual:row3CurrentWinBefore] || [row3CurrentWinBefore isEqual:@"Wild"])){
+                if(([row1CurrentWinAfter isEqual:row2CurrentWin] || [row2CurrentWin isEqual:@"Wild"]) && ([row1CurrentWinAfter isEqual:row3CurrentWinBefore] || [row3CurrentWinBefore isEqual:@"Wild"])){
                     
                     int grabCoins = [payout indexOfObject:row1CurrentWinAfter];
                     NSString *winAmount = [payout_3 objectAtIndex:grabCoins];
                     [showWinData addObject:@"5,3"];;
                     totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                    
                 }else{
                     //Object 2 Win
                     
@@ -1010,7 +1013,7 @@
                             NSString *winAmount = [payout_2 objectAtIndex:grabCoins];
                             [showWinData addObject:@"5,2"];
                             totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                            
                         }else{
                             //NSLog(@"-- no win");
                         }
@@ -1031,7 +1034,7 @@
             NSString *winAmount = [payout_5 objectAtIndex:grabCoins];
             [showWinData addObject:@"6,5"];
             totalWinAmount = totalWinAmount + [winAmount intValue];
-
+            
         }else{
             //Object 4 Win
             if(([row1CurrentWin isEqual:row2CurrentWinBefore] || [row2CurrentWinBefore isEqual:@"Wild"]) && ([row1CurrentWin isEqual:row3CurrentWinBefore] || [row3CurrentWinBefore isEqual:@"Wild"]) && ([row1CurrentWin isEqual:row4CurrentWinBefore] || [row4CurrentWinBefore isEqual:@"Wild"])){
@@ -1040,7 +1043,7 @@
                 NSString *winAmount = [payout_4 objectAtIndex:grabCoins];
                 [showWinData addObject:@"6,4"];
                 totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                
             }else{
                 //Object 3 Win
                 if(([row1CurrentWin isEqual:row2CurrentWinBefore] || [row2CurrentWinBefore isEqual:@"Wild"]) && ([row1CurrentWin isEqual:row3CurrentWinBefore] || [row3CurrentWinBefore isEqual:@"Wild"])){
@@ -1049,7 +1052,7 @@
                     NSString *winAmount = [payout_3 objectAtIndex:grabCoins];
                     [showWinData addObject:@"6,3"];
                     totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                    
                 }else{
                     //Object 2 Win
                     if([row1CurrentWin isEqual:@"J"] || [row1CurrentWin isEqual:@"Q"] || [row1CurrentWin isEqual:@"Star"] ){
@@ -1060,7 +1063,7 @@
                             NSString *winAmount = [payout_2 objectAtIndex:grabCoins];
                             [showWinData addObject:@"6,2"];
                             totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                            
                         }else{
                             //NSLog(@"-- no win");
                         }
@@ -1081,7 +1084,7 @@
             NSString *winAmount = [payout_5 objectAtIndex:grabCoins];
             [showWinData addObject:@"7,5"];
             totalWinAmount = totalWinAmount + [winAmount intValue];
-
+            
         }else{
             //Object 4 Win
             if(([row1CurrentWin isEqual:row2CurrentWinAfter] || [row2CurrentWinAfter isEqual:@"Wild"]) && ([row1CurrentWin isEqual:row3CurrentWinAfter] || [row3CurrentWinAfter isEqual:@"Wild"]) && ([row1CurrentWin isEqual:row4CurrentWinAfter] || [row4CurrentWinAfter isEqual:@"Wild"])){
@@ -1090,7 +1093,7 @@
                 NSString *winAmount = [payout_4 objectAtIndex:grabCoins];
                 [showWinData addObject:@"7,4"];
                 totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                
             }else{
                 //Object 3 Win
                 if(([row1CurrentWin isEqual:row2CurrentWinAfter] || [row2CurrentWinAfter isEqual:@"Wild"]) && ([row1CurrentWin isEqual:row3CurrentWinAfter] || [row3CurrentWinAfter isEqual:@"Wild"])){
@@ -1100,7 +1103,7 @@
                     NSString *winAmount = [payout_3 objectAtIndex:grabCoins];
                     [showWinData addObject:@"7,3"];
                     totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                    
                 }else{
                     //Object 2 Win
                     if([row1CurrentWin isEqual:@"J"] || [row1CurrentWin isEqual:@"Q"] || [row1CurrentWin isEqual:@"Star"] ){
@@ -1111,7 +1114,7 @@
                             NSString *winAmount = [payout_2 objectAtIndex:grabCoins];
                             [showWinData addObject:@"7,2"];
                             totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                            
                         }else{
                             //NSLog(@"-- no win");
                         }
@@ -1132,7 +1135,7 @@
             NSString *winAmount = [payout_5 objectAtIndex:grabCoins];
             [showWinData addObject:@"8,5"];
             totalWinAmount = totalWinAmount + [winAmount intValue];
-
+            
         }else{
             //Object 4 Win
             if(([row1CurrentWinBefore isEqual:row2CurrentWinBefore] || [row2CurrentWinBefore isEqual:@"Wild"]) && ([row1CurrentWinBefore isEqual:row3CurrentWin] || [row3CurrentWin isEqual:@"Wild"]) && ([row1CurrentWinBefore isEqual:row4CurrentWinAfter] || [row4CurrentWinAfter isEqual:@"Wild"])){
@@ -1141,7 +1144,7 @@
                 NSString *winAmount = [payout_4 objectAtIndex:grabCoins];
                 [showWinData addObject:@"8,4"];
                 totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                
             }else{
                 //Object 3 Win
                 if(([row1CurrentWinBefore isEqual:row2CurrentWinBefore] || [row2CurrentWinBefore isEqual:@"Wild"]) && ([row1CurrentWinBefore isEqual:row3CurrentWin] || [row3CurrentWin isEqual:@"Wild"])){
@@ -1150,7 +1153,7 @@
                     NSString *winAmount = [payout_3 objectAtIndex:grabCoins];
                     [showWinData addObject:@"8,3"];
                     totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                    
                 }else{
                     //Object 2 Win
                     if([row1CurrentWinBefore isEqual:@"J"] || [row1CurrentWinBefore isEqual:@"Q"] || [row1CurrentWinBefore isEqual:@"Star"] ){
@@ -1161,7 +1164,7 @@
                             NSString *winAmount = [payout_2 objectAtIndex:grabCoins];
                             [showWinData addObject:@"8,2"];
                             totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                            
                         }else{
                             //NSLog(@"-- no win");
                         }
@@ -1182,7 +1185,7 @@
             NSString *winAmount = [payout_5 objectAtIndex:grabCoins];
             [showWinData addObject:@"9,5"];
             totalWinAmount = totalWinAmount + [winAmount intValue];
-
+            
         }else{
             //Object 4 Win
             if(([row1CurrentWinAfter isEqual:row2CurrentWinAfter] || [row2CurrentWinAfter isEqual:@"Wild"]) && ([row1CurrentWinAfter isEqual:row3CurrentWin] || [row3CurrentWin isEqual:@"Wild"]) && ([row1CurrentWinAfter isEqual:row4CurrentWinBefore] || [row4CurrentWinBefore isEqual:@"Wild"])){
@@ -1191,7 +1194,7 @@
                 NSString *winAmount = [payout_4 objectAtIndex:grabCoins];
                 [showWinData addObject:@"9,4"];
                 totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                
             }else{
                 //Object 3 Win
                 if(([row1CurrentWinAfter isEqual:row2CurrentWinAfter] || [row2CurrentWinAfter isEqual:@"Wild"]) && ([row1CurrentWinAfter isEqual:row3CurrentWin] || [row3CurrentWin isEqual:@"Wild"])){
@@ -1200,7 +1203,7 @@
                     NSString *winAmount = [payout_3 objectAtIndex:grabCoins];
                     [showWinData addObject:@"9,3"];
                     totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                    
                 }else{
                     //Object 2 Win
                     if([row1CurrentWinAfter isEqual:@"J"] || [row1CurrentWinAfter isEqual:@"Q"] || [row1CurrentWinAfter isEqual:@"Star"] ){
@@ -1211,7 +1214,7 @@
                             NSString *winAmount = [payout_2 objectAtIndex:grabCoins];
                             [showWinData addObject:@"9,2"];
                             totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                            
                         }else{
                             //NSLog(@"-- no win");
                         }
@@ -1232,7 +1235,7 @@
             NSString *winAmount = [payout_5 objectAtIndex:grabCoins];
             [showWinData addObject:@"10,5"];
             totalWinAmount = totalWinAmount + [winAmount intValue];
-
+            
         }else{
             //Object 4 Win
             if(([row1CurrentWin isEqual:row2CurrentWinBefore] || [row2CurrentWinBefore isEqual:@"Wild"]) && ([row1CurrentWin isEqual:row3CurrentWin] || [row3CurrentWin isEqual:@"Wild"]) && ([row1CurrentWin isEqual:row4CurrentWinAfter] || [row4CurrentWinAfter isEqual:@"Wild"])){
@@ -1241,7 +1244,7 @@
                 NSString *winAmount = [payout_4 objectAtIndex:grabCoins];
                 [showWinData addObject:@"10,4"];
                 totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                
             }else{
                 //Object 3 Win
                 if(([row1CurrentWin isEqual:row2CurrentWinBefore] || [row2CurrentWinBefore isEqual:@"Wild"]) && ([row1CurrentWin isEqual:row3CurrentWin] || [row3CurrentWin isEqual:@"Wild"])){
@@ -1250,7 +1253,7 @@
                     NSString *winAmount = [payout_3 objectAtIndex:grabCoins];
                     [showWinData addObject:@"10,3"];
                     totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                    
                 }else{
                     //Object 2 Win
                     
@@ -1262,7 +1265,7 @@
                             NSString *winAmount = [payout_2 objectAtIndex:grabCoins];
                             [showWinData addObject:@"10,2"];
                             totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                            
                         }else{
                             //NSLog(@"-- no win");
                         }
@@ -1283,7 +1286,7 @@
             NSString *winAmount = [payout_5 objectAtIndex:grabCoins];
             [showWinData addObject:@"11,5"];
             totalWinAmount = totalWinAmount + [winAmount intValue];
-
+            
         }else{
             //Object 4 Win
             if(([row1CurrentWin isEqual:row2CurrentWinAfter] || [row2CurrentWinAfter isEqual:@"Wild"]) && ([row1CurrentWin isEqual:row3CurrentWin] || [row3CurrentWin isEqual:@"Wild"]) && ([row1CurrentWin isEqual:row4CurrentWinBefore] || [row4CurrentWinBefore isEqual:@"Wild"])){
@@ -1292,7 +1295,7 @@
                 NSString *winAmount = [payout_4 objectAtIndex:grabCoins];
                 [showWinData addObject:@"11,4"];
                 totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                
             }else{
                 //Object 3 Win
                 if(([row1CurrentWin isEqual:row2CurrentWinAfter] || [row2CurrentWinAfter isEqual:@"Wild"]) && ([row1CurrentWin isEqual:row3CurrentWin] || [row3CurrentWin isEqual:@"Wild"])){
@@ -1301,7 +1304,7 @@
                     NSString *winAmount = [payout_3 objectAtIndex:grabCoins];
                     [showWinData addObject:@"11,3"];
                     totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                    
                 }else{
                     //Object 2 Win
                     
@@ -1313,7 +1316,7 @@
                             NSString *winAmount = [payout_2 objectAtIndex:grabCoins];
                             [showWinData addObject:@"11,2"];
                             totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                            
                         }else{
                             //NSLog(@"-- no win");
                         }
@@ -1322,7 +1325,7 @@
             }
         }
     }
-
+    
     // line 12 check if won
     if(linesToSpin >= 12){
         //NSLog(@"playing 12 line");
@@ -1334,7 +1337,7 @@
             NSString *winAmount = [payout_5 objectAtIndex:grabCoins];
             [showWinData addObject:@"12,5"];
             totalWinAmount = totalWinAmount + [winAmount intValue];
-
+            
         }else{
             //Object 4 Win
             if(([row1CurrentWinBefore isEqual:row2CurrentWin] || [row2CurrentWin isEqual:@"Wild"]) && ([row1CurrentWinBefore isEqual:row3CurrentWin] || [row3CurrentWin isEqual:@"Wild"]) && ([row1CurrentWinBefore isEqual:row4CurrentWin] || [row4CurrentWin isEqual:@"Wild"])){
@@ -1343,7 +1346,7 @@
                 NSString *winAmount = [payout_4 objectAtIndex:grabCoins];
                 [showWinData addObject:@"12,4"];
                 totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                
             }else{
                 //Object 3 Win
                 if(([row1CurrentWinBefore isEqual:row2CurrentWin] || [row2CurrentWin isEqual:@"Wild"]) && ([row1CurrentWinBefore isEqual:row3CurrentWin] || [row3CurrentWin isEqual:@"Wild"])){
@@ -1352,7 +1355,7 @@
                     NSString *winAmount = [payout_3 objectAtIndex:grabCoins];
                     [showWinData addObject:@"12,3"];
                     totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                    
                 }else{
                     //Object 2 Win
                     
@@ -1364,7 +1367,7 @@
                             NSString *winAmount = [payout_2 objectAtIndex:grabCoins];
                             [showWinData addObject:@"12,2"];
                             totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                            
                         }else{
                             //NSLog(@"-- no win");
                         }
@@ -1373,7 +1376,7 @@
             }
         }
     }
-
+    
     // line 13 check if won
     if(linesToSpin >= 13){
         //NSLog(@"playing 13 line");
@@ -1385,7 +1388,7 @@
             NSString *winAmount = [payout_5 objectAtIndex:grabCoins];
             [showWinData addObject:@"13,5"];
             totalWinAmount = totalWinAmount + [winAmount intValue];
-
+            
         }else{
             //Object 4 Win
             if(([row1CurrentWinAfter isEqual:row2CurrentWin] || [row2CurrentWin isEqual:@"Wild"]) && ([row1CurrentWinAfter isEqual:row3CurrentWin] || [row3CurrentWin isEqual:@"Wild"]) && ([row1CurrentWinAfter isEqual:row4CurrentWin] || [row4CurrentWin isEqual:@"Wild"])){
@@ -1394,7 +1397,7 @@
                 NSString *winAmount = [payout_4 objectAtIndex:grabCoins];
                 [showWinData addObject:@"13,4"];
                 totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                
             }else{
                 //Object 3 Win
                 if(([row1CurrentWinAfter isEqual:row2CurrentWin] || [row2CurrentWin isEqual:@"Wild"]) && ([row1CurrentWinAfter isEqual:row3CurrentWin] || [row3CurrentWin isEqual:@"Wild"])){
@@ -1403,7 +1406,7 @@
                     NSString *winAmount = [payout_3 objectAtIndex:grabCoins];
                     [showWinData addObject:@"13,3"];
                     totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                    
                 }else{
                     //Object 2 Win
                     
@@ -1415,7 +1418,7 @@
                             NSString *winAmount = [payout_2 objectAtIndex:grabCoins];
                             [showWinData addObject:@"13,2"];
                             totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                            
                         }else{
                             //NSLog(@"-- no win");
                         }
@@ -1424,7 +1427,7 @@
             }
         }
     }
-
+    
     // line 14 check if won
     if(linesToSpin >= 14){
         //NSLog(@"playing 14 line");
@@ -1436,7 +1439,7 @@
             NSString *winAmount = [payout_5 objectAtIndex:grabCoins];
             [showWinData addObject:@"14,5"];
             totalWinAmount = totalWinAmount + [winAmount intValue];
-
+            
         }else{
             //Object 4 Win
             if(([row1CurrentWinBefore isEqual:row2CurrentWin] || [row2CurrentWin isEqual:@"Wild"]) && ([row1CurrentWinBefore isEqual:row3CurrentWinBefore] || [row3CurrentWinBefore isEqual:@"Wild"]) && ([row1CurrentWinBefore isEqual:row4CurrentWin] || [row4CurrentWin isEqual:@"Wild"])){
@@ -1445,7 +1448,7 @@
                 NSString *winAmount = [payout_4 objectAtIndex:grabCoins];
                 [showWinData addObject:@"14,4"];
                 totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                
             }else{
                 //Object 3 Win
                 if(([row1CurrentWinBefore isEqual:row2CurrentWin] || [row2CurrentWin isEqual:@"Wild"]) && ([row1CurrentWinBefore isEqual:row3CurrentWinBefore] || [row3CurrentWinBefore isEqual:@"Wild"])){
@@ -1454,7 +1457,7 @@
                     NSString *winAmount = [payout_3 objectAtIndex:grabCoins];
                     [showWinData addObject:@"14,3"];
                     totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                    
                 }else{
                     //Object 2 Win
                     
@@ -1466,7 +1469,7 @@
                             NSString *winAmount = [payout_2 objectAtIndex:grabCoins];
                             [showWinData addObject:@"14,2"];
                             totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                            
                         }else{
                             //NSLog(@"-- no win");
                         }
@@ -1487,7 +1490,7 @@
             NSString *winAmount = [payout_5 objectAtIndex:grabCoins];
             [showWinData addObject:@"15,5"];
             totalWinAmount = totalWinAmount + [winAmount intValue];
-
+            
         }else{
             //Object 4 Win
             if(([row1CurrentWinAfter isEqual:row2CurrentWin] || [row2CurrentWin isEqual:@"Wild"]) && ([row1CurrentWinAfter isEqual:row3CurrentWinAfter] || [row3CurrentWinAfter isEqual:@"Wild"]) && ([row1CurrentWinAfter isEqual:row4CurrentWin] || [row4CurrentWin isEqual:@"Wild"])){
@@ -1496,7 +1499,7 @@
                 NSString *winAmount = [payout_4 objectAtIndex:grabCoins];
                 [showWinData addObject:@"15,4"];
                 totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                
             }else{
                 //Object 3 Win
                 if(([row1CurrentWinAfter isEqual:row2CurrentWin] || [row2CurrentWin isEqual:@"Wild"]) && ([row1CurrentWinAfter isEqual:row3CurrentWinAfter] || [row3CurrentWinAfter isEqual:@"Wild"])){
@@ -1505,7 +1508,7 @@
                     NSString *winAmount = [payout_3 objectAtIndex:grabCoins];
                     [showWinData addObject:@"15,3"];
                     totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                    
                 }else{
                     //Object 2 Win
                     
@@ -1517,7 +1520,7 @@
                             NSString *winAmount = [payout_2 objectAtIndex:grabCoins];
                             [showWinData addObject:@"15,2"];
                             totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                            
                         }else{
                             //NSLog(@"-- no win");
                         }
@@ -1526,7 +1529,7 @@
             }
         }
     }
-
+    
     // line 16 check if won
     if(linesToSpin >= 16){
         //NSLog(@"playing 16 line");
@@ -1538,7 +1541,7 @@
             NSString *winAmount = [payout_5 objectAtIndex:grabCoins];
             [showWinData addObject:@"16,5"];
             totalWinAmount = totalWinAmount + [winAmount intValue];
-
+            
         }else{
             //Object 4 Win
             if(([row1CurrentWin isEqual:row2CurrentWin] || [row2CurrentWin isEqual:@"Wild"]) && ([row1CurrentWin isEqual:row3CurrentWinBefore] || [row3CurrentWinBefore isEqual:@"Wild"]) && ([row1CurrentWin isEqual:row4CurrentWin] || [row4CurrentWin isEqual:@"Wild"])){
@@ -1547,7 +1550,7 @@
                 NSString *winAmount = [payout_4 objectAtIndex:grabCoins];
                 [showWinData addObject:@"16,4"];
                 totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                
             }else{
                 //Object 3 Win
                 if(([row1CurrentWin isEqual:row2CurrentWin] || [row2CurrentWin isEqual:@"Wild"]) && ([row1CurrentWin isEqual:row3CurrentWinBefore] || [row3CurrentWinBefore isEqual:@"Wild"])){
@@ -1556,7 +1559,7 @@
                     NSString *winAmount = [payout_3 objectAtIndex:grabCoins];
                     [showWinData addObject:@"16,3"];
                     totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                    
                 }else{
                     //Object 2 Win
                     
@@ -1568,7 +1571,7 @@
                             NSString *winAmount = [payout_2 objectAtIndex:grabCoins];
                             [showWinData addObject:@"16,2"];
                             totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                            
                         }else{
                             //NSLog(@"-- no win");
                         }
@@ -1577,7 +1580,7 @@
             }
         }
     }
-
+    
     // line 17 check if won
     if(linesToSpin >= 17){
         //NSLog(@"playing 17 line");
@@ -1589,7 +1592,7 @@
             NSString *winAmount = [payout_5 objectAtIndex:grabCoins];
             [showWinData addObject:@"17,5"];
             totalWinAmount = totalWinAmount + [winAmount intValue];
-
+            
         }else{
             //Object 4 Win
             if(([row1CurrentWin isEqual:row2CurrentWin] || [row2CurrentWin isEqual:@"Wild"]) && ([row1CurrentWin isEqual:row3CurrentWinAfter] || [row3CurrentWinAfter isEqual:@"Wild"]) && ([row1CurrentWin isEqual:row4CurrentWin] || [row4CurrentWin isEqual:@"Wild"])){
@@ -1598,7 +1601,7 @@
                 NSString *winAmount = [payout_4 objectAtIndex:grabCoins];
                 [showWinData addObject:@"17,4"];
                 totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                
             }else{
                 //Object 3 Win
                 if(([row1CurrentWin isEqual:row2CurrentWin] || [row2CurrentWin isEqual:@"Wild"]) && ([row1CurrentWin isEqual:row3CurrentWinAfter] || [row3CurrentWinAfter isEqual:@"Wild"])){
@@ -1607,7 +1610,7 @@
                     NSString *winAmount = [payout_3 objectAtIndex:grabCoins];
                     [showWinData addObject:@"17,3"];
                     totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                    
                 }else{
                     //Object 2 Win
                     
@@ -1619,7 +1622,7 @@
                             NSString *winAmount = [payout_2 objectAtIndex:grabCoins];
                             [showWinData addObject:@"17,2"];
                             totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                            
                         }else{
                             //NSLog(@"-- no win");
                         }
@@ -1640,7 +1643,7 @@
             NSString *winAmount = [payout_5 objectAtIndex:grabCoins];
             [showWinData addObject:@"18,5"];
             totalWinAmount = totalWinAmount + [winAmount intValue];
-
+            
         }else{
             //Object 4 Win
             if(([row1CurrentWinBefore isEqual:row2CurrentWinBefore] || [row2CurrentWinBefore isEqual:@"Wild"]) && ([row1CurrentWinBefore isEqual:row3CurrentWin] || [row3CurrentWin isEqual:@"Wild"]) && ([row1CurrentWinBefore isEqual:row4CurrentWinBefore] || [row4CurrentWinBefore isEqual:@"Wild"])){
@@ -1649,7 +1652,7 @@
                 NSString *winAmount = [payout_4 objectAtIndex:grabCoins];
                 [showWinData addObject:@"18,4"];
                 totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                
             }else{
                 //Object 3 Win
                 if(([row1CurrentWinBefore isEqual:row2CurrentWinBefore] || [row2CurrentWinBefore isEqual:@"Wild"]) && ([row1CurrentWinBefore isEqual:row3CurrentWin] || [row3CurrentWin isEqual:@"Wild"])){
@@ -1658,7 +1661,7 @@
                     NSString *winAmount = [payout_3 objectAtIndex:grabCoins];
                     [showWinData addObject:@"18,3"];
                     totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                    
                 }else{
                     //Object 2 Win
                     
@@ -1670,7 +1673,7 @@
                             NSString *winAmount = [payout_2 objectAtIndex:grabCoins];
                             [showWinData addObject:@"18,2"];
                             totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                            
                         }else{
                             //NSLog(@"-- no win");
                         }
@@ -1679,7 +1682,7 @@
             }
         }
     }
-
+    
     // line 19 check if won
     if(linesToSpin >= 19){
         //NSLog(@"playing 19 line");
@@ -1691,7 +1694,7 @@
             NSString *winAmount = [payout_5 objectAtIndex:grabCoins];
             [showWinData addObject:@"19,5"];
             totalWinAmount = totalWinAmount + [winAmount intValue];
-
+            
         }else{
             //Object 4 Win
             if(([row1CurrentWinAfter isEqual:row2CurrentWinAfter] || [row2CurrentWinAfter isEqual:@"Wild"]) && ([row1CurrentWinAfter isEqual:row3CurrentWin] || [row3CurrentWin isEqual:@"Wild"]) && ([row1CurrentWinAfter isEqual:row4CurrentWinAfter] || [row4CurrentWinAfter isEqual:@"Wild"])){
@@ -1700,7 +1703,7 @@
                 NSString *winAmount = [payout_4 objectAtIndex:grabCoins];
                 [showWinData addObject:@"19,4"];
                 totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                
             }else{
                 //Object 3 Win
                 if(([row1CurrentWinAfter isEqual:row2CurrentWinAfter] || [row2CurrentWinAfter isEqual:@"Wild"]) && ([row1CurrentWinAfter isEqual:row3CurrentWin] || [row3CurrentWin isEqual:@"Wild"])){
@@ -1709,7 +1712,7 @@
                     NSString *winAmount = [payout_3 objectAtIndex:grabCoins];
                     [showWinData addObject:@"19,3"];
                     totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                    
                 }else{
                     //Object 2 Win
                     
@@ -1721,7 +1724,7 @@
                             NSString *winAmount = [payout_2 objectAtIndex:grabCoins];
                             [showWinData addObject:@"19,2"];
                             totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                            
                         }else{
                             //NSLog(@"-- no win");
                         }
@@ -1730,7 +1733,7 @@
             }
         }
     }
-
+    
     // line 20 check if won
     if(linesToSpin >= 20){
         //NSLog(@"playing 20 line");
@@ -1742,7 +1745,7 @@
             NSString *winAmount = [payout_5 objectAtIndex:grabCoins];
             [showWinData addObject:@"20,5"];
             totalWinAmount = totalWinAmount + [winAmount intValue];
-
+            
         }else{
             //Object 4 Win
             if(([row1CurrentWin isEqual:row2CurrentWinAfter] || [row2CurrentWinAfter isEqual:@"Wild"]) && ([row1CurrentWin isEqual:row3CurrentWinBefore] || [row3CurrentWinBefore isEqual:@"Wild"]) && ([row1CurrentWin isEqual:row4CurrentWinAfter] || [row4CurrentWinAfter isEqual:@"Wild"])){
@@ -1751,7 +1754,7 @@
                 NSString *winAmount = [payout_4 objectAtIndex:grabCoins];
                 [showWinData addObject:@"20,4"];
                 totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                
             }else{
                 //Object 3 Win
                 if(([row1CurrentWin isEqual:row2CurrentWinAfter] || [row2CurrentWinAfter isEqual:@"Wild"]) && ([row1CurrentWin isEqual:row3CurrentWinBefore] || [row3CurrentWinBefore isEqual:@"Wild"])){
@@ -1760,7 +1763,7 @@
                     NSString *winAmount = [payout_3 objectAtIndex:grabCoins];
                     [showWinData addObject:@"20,3"];
                     totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                    
                 }else{
                     //Object 2 Win
                     
@@ -1772,7 +1775,7 @@
                             NSString *winAmount = [payout_2 objectAtIndex:grabCoins];
                             [showWinData addObject:@"20,2"];
                             totalWinAmount = totalWinAmount + [winAmount intValue];
-
+                            
                         }else{
                             //NSLog(@"-- no win");
                         }
@@ -1781,7 +1784,7 @@
             }
         }
     }
-
+    
     // line 21 check if won
     if(linesToSpin >= 21){
         //NSLog(@"playing 21 line");
@@ -2291,8 +2294,8 @@
             }
         }
     }
-
-
+    
+    
     //NSLog(@"xxxxxxxxxxxxx ------------------ total won: %i", totalWinAmount);
     
     
@@ -2310,7 +2313,7 @@
     //score submit
     AppDelegate* del = (AppDelegate*)[UIApplication sharedApplication].delegate;
     [del.viewController submitScore:XP];
-
+    
     [CommonUtilities encryptString:[NSString stringWithFormat:@"%i", XP]:@"exp"];
     
     optionXP.text = [CommonUtilities decryptString:@"exp"];
@@ -2431,7 +2434,7 @@
     if([won isEqual:@"YES"]){
         
         wonCounter = 0;
-
+        
         dropCoinsTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(handleDropCoins) userInfo:nil repeats:YES];
         
         [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(removeBigWin) userInfo:nil repeats:NO];
@@ -2448,7 +2451,7 @@
         showWinStatus = @"YES";
         //nudgeStatus = @"NO";
     }
-
+    
     if([displayCoins.text isEqual:@"0"]){
         //nudgeStatus = @"NO";
         //holdStatus = @"NO";
@@ -2511,8 +2514,8 @@
 
 - (void)pushBonus{
     /*
-    BonusViewController *sampleView = [[[BonusViewController alloc] init] autorelease];
-    [self presentModalViewController:sampleView animated:NO];*/
+     BonusViewController *sampleView = [[[BonusViewController alloc] init] autorelease];
+     [self presentModalViewController:sampleView animated:NO];*/
     
     if([bonusDoubleStatus isEqual:@"YES"]){
         int random = arc4random() % 3;
@@ -2539,7 +2542,7 @@
             BonusViewController *sampleView = [[[BonusViewController alloc] initWithNibName:@"BonusViewController" bundle:nil] autorelease];
             [self presentModalViewController:sampleView animated:NO];
         }
-    }    
+    }
 }
 
 -(void)removeBigWin{
@@ -3231,7 +3234,7 @@
         }
         counter = counter + 1;
     }
-
+    
     int random = arc4random() % [tmpObject count];
     NSString *randomValue = [tmpObject objectAtIndex:random];
     
@@ -3278,7 +3281,7 @@
 
 -(int)spinMoveToRow4:(NSString *)object{
     NSArray *winLine4 = [NSArray arrayWithObjects: @"Star", @"Wild", @"J", @"A", @"Bonus", @"Diamond", @"7", @"J", @"Star", @"J", @"Bonus", @"Diamond", @"K", @"Q", @"A", @"K", @"7", @"Lemon", @"K", @"Q", nil];
-
+    
     NSMutableArray *tmpObject = [[NSMutableArray alloc] init];
     int counter = 0;
     
@@ -3582,9 +3585,9 @@
 }
 
 - (void)spin{
-//    btnSpin.hidden= YES;
+    //    btnSpin.hidden= YES;
     
-     [btnSpin setBackgroundImage:[UIImage imageNamed:@"spin_iphone@2x_pressed.png"] forState:UIControlStateHighlighted];
+    [btnSpin setBackgroundImage:[UIImage imageNamed:@"spin_iphone@2x_pressed.png"] forState:UIControlStateHighlighted];
     [self hideLevel:@""];
     [self hidePayTable:@""];
     
@@ -3698,9 +3701,9 @@
             currentSpins = currentSpins + 1;
             [CommonUtilities encryptString:[NSString stringWithFormat:@"%i", currentSpins]:@"spins"];
             // show ad if necessary:
-            #ifdef ADS_SPIN_FREQUENCY
+#ifdef ADS_SPIN_FREQUENCY
             if ((currentSpins % ADS_SPIN_FREQUENCY) == 0) {
-              [Chartboost showInterstitial:CBLocationHomeScreen];
+                [Chartboost showInterstitial:CBLocationHomeScreen];
             }
             /*
              for revmob interstitials instead of Chartboost, instead of the line that says
@@ -3708,8 +3711,8 @@
              write a line that says
              [[RevMobAds session] showFullscreen];
              */
-            #endif
-
+#endif
+            
             
             // current won
             int currentWon = [[CommonUtilities decryptString:@"won"] intValue];
@@ -3815,7 +3818,7 @@
                 row1Postion = row1Postion - 20;
             }
             
-            // move row 2 
+            // move row 2
             int placesmoved2 = (moveRow2Amount / 10);
             row2Postion = (placesmoved2 + row2Postion);
             
@@ -3849,9 +3852,9 @@
             
             if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
                 if (!rowTimer.isValid) {
-                     if (rowTimer ==NULL) {
-                    rowTimer = [NSTimer scheduledTimerWithTimeInterval:0.004 target:self selector:@selector(moveRow) userInfo:nil repeats:YES];
-                     }
+                    if (rowTimer ==NULL) {
+                        rowTimer = [NSTimer scheduledTimerWithTimeInterval:0.004 target:self selector:@selector(moveRow) userInfo:nil repeats:YES];
+                    }
                 }
             }else{
                 if (rowTimer ==NULL) {
@@ -3863,7 +3866,7 @@
 }
 
 - (IBAction)spin:(id)sender{
-    
+    autoSpinAmountCounter = 0;
     if([lblSpin.text isEqual:@"Stop"]){
         autoSpinAmountCounter = 0;
         lblAutoSpin.text = @"Auto Spin";
@@ -3879,37 +3882,59 @@
 
 -(IBAction)autoSpinByAmount:(id)sender{
     
-    if([autoSpinStatus isEqual:@"YES"]){
-        [autoSpinTimer invalidate];
-        autoSpinStatus = @"NO";
-        autoSpinAmountCounter = 0;
-        
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:1.0];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
+        // finish at 280;
+        viewAutoSpinMenu.frame = CGRectMake(2,550,175,240);
     }else{
-        if([kautoSpinOverride isEqual:@"YES"]){
-            autoSpinAmountCounter = 50000;
-            
-            [self autoSpin];
-            autoSpinTimer = [NSTimer scheduledTimerWithTimeInterval:DELAY_FOR_AUTO_SPIN target:self selector:@selector(autoSpin) userInfo:nil repeats:YES];
-            autoSpinStatus = @"YES";
-            
-            lblAutoSpin.text = @"Stop";
-            lblSpin.text = @"Stop";
-        }else{
-            UIButton *button = (UIButton *)sender;
-            autoSpinAmountCounter = button.tag;
-            
-            [self autoSpin];
-            autoSpinTimer = [NSTimer scheduledTimerWithTimeInterval:DELAY_FOR_AUTO_SPIN target:self selector:@selector(autoSpin) userInfo:nil repeats:YES];
-            autoSpinStatus = @"YES";
-            
-            lblAutoSpin.text = @"Stop";
-            lblSpin.text = @"Stop";
-        }
+        viewAutoSpinMenu.frame = CGRectMake(5,250,81,110);
     }
+    [UIView commitAnimations];
+    autoSpinStatusMenu = @"NO";
+    lblAutoSpin.text = @"Auto Spin";
+    
+    UIButton *button = (UIButton *)sender;
+    autoSpinAmountCounter = button.tag;
+    [self spin];
+    /*
+     if([autoSpinStatus isEqual:@"YES"]){
+     [autoSpinTimer invalidate];
+     autoSpinStatus = @"NO";
+     autoSpinAmountCounter = 0;
+     
+     }else{
+     if([kautoSpinOverride isEqual:@"YES"]){
+     autoSpinAmountCounter = 50000;
+     
+     [self autoSpin];
+     autoSpinTimer = [NSTimer scheduledTimerWithTimeInterval:DELAY_FOR_AUTO_SPIN target:self selector:@selector(autoSpin) userInfo:nil repeats:YES];
+     autoSpinStatus = @"YES";
+     
+     lblAutoSpin.text = @"Stop";
+     lblSpin.text = @"Stop";
+     }else{
+     UIButton *button = (UIButton *)sender;
+     autoSpinAmountCounter = button.tag;
+     
+     [self autoSpin];
+     autoSpinTimer = [NSTimer scheduledTimerWithTimeInterval:DELAY_FOR_AUTO_SPIN target:self selector:@selector(autoSpin) userInfo:nil repeats:YES];
+     autoSpinStatus = @"YES";
+     
+     lblAutoSpin.text = @"Stop";
+     lblSpin.text = @"Stop";
+     }
+     }*/
 }
 
--(void)nextAutospin{
 
+-(void)nextAutospin{
+    autoSpinAmountCounter = autoSpinAmountCounter - 1;
+    if (autoSpinAmountCounter > 0) {
+        [self spin];
+    }
+    
 }
 
 - (IBAction)autoSpin:(id)sender{
@@ -3967,9 +3992,9 @@
         lblAutoSpin.text = @"Stop";
         lblSpin.text = @"Stop";
         
-        [self spin];
-        autoSpinAmountCounter = autoSpinAmountCounter - 1;
-        
+        //        [self spin];
+        //        autoSpinAmountCounter = autoSpinAmountCounter - 1;
+        //
         defaultMessages = @"NO";
         
         if(autoSpinAmountCounter == 1){
@@ -4046,6 +4071,8 @@
 
 - (void)viewWillDisappear:(BOOL)animated{
     [self cleanUpOnClose];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"1004" object:nil];
+    [super viewWillDisappear:animated];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -4053,10 +4080,11 @@
     prizeShuffleCounter = 0;
     displayCoins.text = [CommonUtilities decryptString:@"coins"];
     [self presetSoundButtons];
-
+    
     rateCounter = 0;
-   
+    
 }
+
 
 -(BOOL)webView:(UIWebView *)inWeb shouldStartLoadWithRequest:(NSURLRequest *)inRequest navigationType:(UIWebViewNavigationType)inType {
     if ( inType == UIWebViewNavigationTypeLinkClicked ) {
@@ -4227,7 +4255,7 @@
     int currentLine = [[CommonUtilities decryptString:@"optionLines"] intValue];
     
     int nextLine = 0;
-
+    
     if(currentLine == [[CommonUtilities decryptString:@"game_lines"] intValue]){
         nextLine = 1;
     }else{
@@ -4272,7 +4300,7 @@
     }else if(currentBet == 50){
         nextBet = 1;
     }
-
+    
     optionBet.text = [NSString stringWithFormat:@"%i", nextBet];
     [CommonUtilities encryptString:[NSString stringWithFormat:@"%i", nextBet]:@"optionBet"];
     
@@ -4498,7 +4526,7 @@
     
     lblCounter = 0;
     alertControl = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(changeLbl) userInfo:nil repeats:YES];
-
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(CloseForBonus:) name:@"CloseForBonus" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sortCoins:) name:@"sortCoins" object:nil];
     
@@ -4696,7 +4724,7 @@
 
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-
+    
     
 }
 
@@ -4705,7 +4733,7 @@
 #pragma mark - rate us popup delegate
 -(void)btnYesClick:(NSString *)tag{
     rateCounter =0;
-     [self dismissPopupViewControllerWithanimationType:MJPopupViewAnimationFade];
+    [self dismissPopupViewControllerWithanimationType:MJPopupViewAnimationFade];
     
     //call rate us popup
     popup_rate *rateobj = [[popup_rate alloc] initWithNibName:@"popup_rate" bundle:nil];
@@ -4739,9 +4767,9 @@
     NSUserDefaults *pref = [NSUserDefaults standardUserDefaults];
     [pref setValue:@"1" forKey:@"rateMyapp"];
     [pref synchronize];
-        NSString *iTunesLink = myAppLink;
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:iTunesLink]];
-        [self dismissPopupViewControllerWithanimationType:MJPopupViewAnimationFade];
+    NSString *iTunesLink = myAppLink;
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:iTunesLink]];
+    [self dismissPopupViewControllerWithanimationType:MJPopupViewAnimationFade];
 }
 
 
@@ -4763,7 +4791,7 @@
 - (void)dealloc{
     [alertControl invalidate];
     [gameCenterManager release];
-
+    
     [super dealloc];
 }
 @end
