@@ -74,7 +74,10 @@
     //    If you'd rather want this, comment out this method
     
     
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(nextAutospin)
+                                                 name:@"1005"
+                                               object:nil];
     
 }
 #endif
@@ -3903,6 +3906,10 @@
             lblSpin.text = @"Stop";
         }
     }
+}
+
+-(void)nextAutospin{
+
 }
 
 - (IBAction)autoSpin:(id)sender{
