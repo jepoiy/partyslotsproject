@@ -47,7 +47,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "3994"
             endingLineNumber = "3994"
-            landmarkName = "-addWinCoins"
+            landmarkName = "-autoSpin"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -185,7 +185,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "4026"
             endingLineNumber = "4026"
-            landmarkName = "-cleanUpOnClose"
+            landmarkName = "-play:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -217,7 +217,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "4023"
             endingLineNumber = "4023"
-            landmarkName = "-play:"
+            landmarkName = "-addWinCoins"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -233,7 +233,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "3991"
             endingLineNumber = "3991"
-            landmarkName = "-addWinCoins"
+            landmarkName = "-autoSpin"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -297,7 +297,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "3913"
             endingLineNumber = "3913"
-            landmarkName = "-autoSpin:"
+            landmarkName = "-nextAutospin"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -313,7 +313,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "3910"
             endingLineNumber = "3910"
-            landmarkName = "-autoSpin:"
+            landmarkName = "-nextAutospin"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
