@@ -20,11 +20,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SimpleSlots/GameClassic20.m"
-            timestampString = "459763058.556102"
+            timestampString = "459791604.693384"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2537"
-            endingLineNumber = "2537"
+            startingLineNumber = "2540"
+            endingLineNumber = "2540"
             landmarkName = "-pushBonus"
             landmarkType = "5">
          </BreakpointContent>
@@ -100,7 +100,7 @@
                   moduleName = "PartySlots"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/dipen/partyslotsproject/SimpleSlots/BonusViewController.m"
-                  timestampString = "459763975.150411"
+                  timestampString = "459791827.363092"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "91"
@@ -115,7 +115,7 @@
                   moduleName = "PartySlots"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/dipen/partyslotsproject/SimpleSlots/BonusViewController.m"
-                  timestampString = "459763975.150596"
+                  timestampString = "459791827.363339"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "92"
@@ -164,7 +164,7 @@
                   moduleName = "PartySlots"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/dipen/partyslotsproject/SimpleSlots/BonusDoubleViewController.m"
-                  timestampString = "459763975.151411"
+                  timestampString = "459791827.364448"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "15"
@@ -179,7 +179,7 @@
                   moduleName = "PartySlots"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/dipen/partyslotsproject/SimpleSlots/BonusDoubleViewController.m"
-                  timestampString = "459763975.151612"
+                  timestampString = "459791827.364669"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "16"
@@ -196,11 +196,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SimpleSlots/GameClassic20.m"
-            timestampString = "459763090.701312"
+            timestampString = "459791604.693384"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2583"
-            endingLineNumber = "2583"
+            startingLineNumber = "2596"
+            endingLineNumber = "2596"
             landmarkName = "-removeBigWin"
             landmarkType = "5">
          </BreakpointContent>
@@ -212,11 +212,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SimpleSlots/GameClassic20.m"
-            timestampString = "459763092.484004"
+            timestampString = "459791604.693384"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2577"
-            endingLineNumber = "2577"
+            startingLineNumber = "2589"
+            endingLineNumber = "2589"
             landmarkName = "-showBigWin"
             landmarkType = "5">
          </BreakpointContent>
@@ -233,6 +233,22 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "2503"
             endingLineNumber = "2503"
+            landmarkName = "-checkIfWon:success:Failure:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SimpleSlots/GameClassic20.m"
+            timestampString = "459791604.693384"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "2522"
+            endingLineNumber = "2522"
             landmarkName = "-checkIfWon:success:Failure:"
             landmarkType = "5">
          </BreakpointContent>

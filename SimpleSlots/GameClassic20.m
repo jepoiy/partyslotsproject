@@ -2516,8 +2516,11 @@
             
 //            [NSTimer scheduledTimerWithTimeInterval:1.4 target:self selector:@selector(pushBonus) userInfo:nil repeats:NO];
         }else{
+            
+//            betAmount = 1;
+//            totalWinAmount = 50;
             if(totalWinAmount > (49 * betAmount)){
-                [self showBigWin];
+                [self showBigBonus];
                 isPushBonus = NO;
                 //  [NSTimer scheduledTimerWithTimeInterval:3.5 target:self selector:@selector(removeBigWin) userInfo:nil repeats:NO];
                 successBlock();
@@ -2567,6 +2570,15 @@
     }
 }
 
+-(void)showBigBonus{
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.4];
+    viewBigWin.alpha = 1.0;
+    [viewBigWin setTransform:CGAffineTransformIdentity];
+    [UIView commitAnimations];
+    [self performSelector:@selector(removeBigWin) withObject:nil afterDelay:3.5];
+}
+
 
 -(void)showBigWin{
     [UIView beginAnimations:nil context:NULL];
@@ -2577,8 +2589,9 @@
     if (!isPushBonus) {
         [self performSelector:@selector(removeBigWin) withObject:nil afterDelay:3.5];
     }
-    
 }
+
+
 -(void)removeBigWin{
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationDuration:0.4];
