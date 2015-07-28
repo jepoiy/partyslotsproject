@@ -634,6 +634,8 @@
     NSArray *winLine5 = [NSArray arrayWithObjects: @"Bonus", @"A", @"Diamond", @"J", @"Lemon", @"Q", @"Star", @"K", @"Star", @"Wild", @"Lemon", @"J", @"Q", @"K", @"Diamond", @"7", @"A", @"Bonus", @"Star", @"7", nil];
     
     
+    
+    
     int localPos1 = row1Postion - 1;
     NSString *row1CurrentWin = [winLine1 objectAtIndex:localPos1];
     //line1.text = row1CurrentWin;
@@ -2449,7 +2451,7 @@
     }
     
     if([won isEqual:@"YES"]){
-        
+        NSLog(@"You win show win data:%d",[showWinData count]);
         wonCounter = 0;
         
         dropCoinsTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(handleDropCoins) userInfo:nil repeats:YES];
@@ -2470,7 +2472,7 @@
         showWinStatus = @"YES";
         //nudgeStatus = @"NO";
         
-        [showWinData removeAllObjects];
+       
         
     }
     
