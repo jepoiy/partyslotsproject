@@ -2469,6 +2469,9 @@
         
         showWinStatus = @"YES";
         //nudgeStatus = @"NO";
+        
+        [showWinData removeAllObjects];
+        
     }
     
     if([displayCoins.text isEqual:@"0"]){
