@@ -354,11 +354,18 @@
                 if (rowTimer.isValid) {
                     [rowTimer invalidate];
                     rowTimer = NULL;
+                    [self checkIfWon:@"" success:^{
+                        NSLog(@"Sucess");
+                    } Failure:^{
+                        NSLog(@"Fail");
+                        
+                        [[NSNotificationCenter defaultCenter] postNotificationName:@"1005" object:nil userInfo:nil];
+                    }];
                 }
             }
             
             play = @"YES";
-            [self checkIfWon];
+            // [self checkIfWon];
         }
     }else{
         int amount1 = ((moveRow1Amount/10) * 7);
@@ -561,11 +568,16 @@
                 if (rowTimer.isValid) {
                     [rowTimer invalidate];
                     rowTimer = NULL;
-                    
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"1005" object:nil userInfo:nil];
+                    [self checkIfWon:@"" success:^{
+                        NSLog(@"Sucess");
+                    } Failure:^{
+                        NSLog(@"Fail");
+                        
+                        [[NSNotificationCenter defaultCenter] postNotificationName:@"1005" object:nil userInfo:nil];
+                    }];
                 }
             }
-            [self checkIfWon];
+            //            [self checkIfWon];
         }
         
     }
@@ -605,7 +617,8 @@
     
 }
 
-- (void)checkIfWon{
+- (void)checkIfWon :(NSString *)str
+            success:(SiWinSuccessBlock)successBlock Failure:(SiwinCancelBlock)failure{
     NSArray *winLine1 = [NSArray arrayWithObjects: @"Star", @"A", @"Lemon", @"Diamond", @"Q", @"Lemon", @"J", @"K", @"K", @"Q", @"Star", @"Lemon", @"J", @"A", @"Star", @"Diamond", @"7", @"J", @"J", @"7", nil];
     
     NSArray *winLine2 = [NSArray arrayWithObjects: @"Lemon", @"J", @"Q", @"K", @"Diamond", @"7", @"Wild", @"K", @"Star", @"7", @"Bonus", @"A", @"Diamond", @"J", @"Lemon", @"Q", @"Star", @"K", @"Star", @"J", nil];
@@ -2436,8 +2449,8 @@
         wonCounter = 0;
         
         dropCoinsTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(handleDropCoins) userInfo:nil repeats:YES];
-        
-        [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(removeBigWin) userInfo:nil repeats:NO];
+        [self showBigWin];
+        // [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(removeBigWin) userInfo:nil repeats:NO];
         
         handleDropCoinsStatus = @"YES";
         [BaseViewController playSoundEffect:kSoundWon];
@@ -2460,8 +2473,11 @@
     //NSLog(@"--------- BONUS READ OUT --------- ");
     //NSLog(@"Bonus: %i", bonusCount);
     //NSLog(@"--------- BONUS READ OUT --------- ");
+    
+    
 #pragma mark show Bonus if needed
     if([kBonus isEqual:@"YES"]){
+        // bonusCount = 40;
         if(bonusCount >= 3){
             //autoSpinAmountCounter = 0;
             
@@ -2480,12 +2496,8 @@
                 lblSpin.text = @"Spin!";
             }
             
-            [UIView beginAnimations:nil context:NULL];
-            [UIView setAnimationDuration:0.4];
-            viewBonusWin.alpha = 1.0;
-            [viewBonusWin setTransform:CGAffineTransformIdentity];
-            [UIView commitAnimations];
-            [NSTimer scheduledTimerWithTimeInterval:3.5 target:self selector:@selector(removeBigWin) userInfo:nil repeats:NO];
+            [self showBigWin];
+            // [NSTimer scheduledTimerWithTimeInterval:3.5 target:self selector:@selector(removeBigWin) userInfo:nil repeats:NO];
             
             //NSLog(@"bonus game enabbled ");
             
@@ -2494,20 +2506,17 @@
                 bonusDoubleStatus = @"YES";
                 [CommonUtilities encryptString:[NSString stringWithFormat:@"%i", totalWinAmount]:@"lastWin"];
             }
-            
-            [NSTimer scheduledTimerWithTimeInterval:1.4 target:self selector:@selector(pushBonus) userInfo:nil repeats:NO];
+            successBlock();
+            //[NSTimer scheduledTimerWithTimeInterval:1.4 target:self selector:@selector(pushBonus) userInfo:nil repeats:NO];
         }else{
             if(totalWinAmount > (49 * betAmount)){
-                [UIView beginAnimations:nil context:NULL];
-                [UIView setAnimationDuration:0.4];
-                viewBigWin.alpha = 1.0;
-                [viewBigWin setTransform:CGAffineTransformIdentity];
-                [UIView commitAnimations];
-                [NSTimer scheduledTimerWithTimeInterval:3.5 target:self selector:@selector(removeBigWin) userInfo:nil repeats:NO];
+                [self showBigWin];
+                //  [NSTimer scheduledTimerWithTimeInterval:3.5 target:self selector:@selector(removeBigWin) userInfo:nil repeats:NO];
+                successBlock();
             }else{
-                
+                failure();
             }
-        }
+        }//end of >=3
     }
     
 }
@@ -2545,6 +2554,16 @@
     }
 }
 
+
+-(void)showBigWin{
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.4];
+    viewBonusWin.alpha = 1.0;
+    [viewBonusWin setTransform:CGAffineTransformIdentity];
+    [UIView commitAnimations];
+    [self performSelector:@selector(removeBigWin) withObject:nil afterDelay:3.5];
+    
+}
 -(void)removeBigWin{
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationDuration:0.4];
@@ -2577,6 +2596,9 @@
         moveCoin9.alpha = 0;
         [UIView commitAnimations];
     }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"1005" object:nil userInfo:nil];
+    
 }
 
 -(void) resetWinBoxImages{
@@ -3932,7 +3954,8 @@
 -(void)nextAutospin{
     autoSpinAmountCounter = autoSpinAmountCounter - 1;
     if (autoSpinAmountCounter > 0) {
-        [self spin];
+        //        [self spin];
+        [self performSelector:@selector(spin) withObject:nil afterDelay:1.0];
     }
     
 }
@@ -4672,8 +4695,9 @@
 -(void)changeLbl{
     rateCounter ++;
     NSUserDefaults *pref = [NSUserDefaults standardUserDefaults];
-//    [pref setValue:@"0" forKey:@"rateMyapp"];
-//    [pref synchronize];
+    //    [pref setValue:@"0" forKey:@"rateMyapp"];
+    //    [pref synchronize];
+    
     if (rateCounter >=RateUspopupTime && !popupshow && ![[pref objectForKey:@"rateMyapp"] isEqualToString:@"1"]) {
         rateCounter=0;
         popupshow = true;

@@ -6,6 +6,8 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
+typedef void(^SiWinSuccessBlock)();
+typedef void(^SiwinCancelBlock)();
 
 #import "ViewController.h"
 #import "MJPopupBackgroundView.h"
