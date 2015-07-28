@@ -11,7 +11,12 @@
 @implementation BonusDoubleViewController
 
 -(void)closeBonus{
-    [self dismissModalViewControllerAnimated:NO];
+//    [self dismissModalViewControllerAnimated:NO];
+    [self dismissViewControllerAnimated:NO completion:^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"1006" object:nil userInfo:nil];
+        
+    }];
+
 }
 
 -(IBAction)prizeChest:(id)sender{

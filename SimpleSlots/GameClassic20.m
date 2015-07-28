@@ -80,6 +80,10 @@
     
     
     
+    
+    
+    
+    
 }
 #endif
 
@@ -2477,7 +2481,7 @@
     
 #pragma mark show Bonus if needed
     if([kBonus isEqual:@"YES"]){
-        // bonusCount = 40;
+         //bonusCount = 40;
         if(bonusCount >= 3){
             //autoSpinAmountCounter = 0;
             
@@ -2496,6 +2500,7 @@
                 lblSpin.text = @"Spin!";
             }
             
+            isPushBonus = YES;
             [self showBigWin];
             // [NSTimer scheduledTimerWithTimeInterval:3.5 target:self selector:@selector(removeBigWin) userInfo:nil repeats:NO];
             
@@ -2507,10 +2512,13 @@
                 [CommonUtilities encryptString:[NSString stringWithFormat:@"%i", totalWinAmount]:@"lastWin"];
             }
             successBlock();
-            //[NSTimer scheduledTimerWithTimeInterval:1.4 target:self selector:@selector(pushBonus) userInfo:nil repeats:NO];
+            [self performSelector:@selector(pushBonus) withObject:nil afterDelay:1.4];
+            
+//            [NSTimer scheduledTimerWithTimeInterval:1.4 target:self selector:@selector(pushBonus) userInfo:nil repeats:NO];
         }else{
             if(totalWinAmount > (49 * betAmount)){
                 [self showBigWin];
+                isPushBonus = NO;
                 //  [NSTimer scheduledTimerWithTimeInterval:3.5 target:self selector:@selector(removeBigWin) userInfo:nil repeats:NO];
                 successBlock();
             }else{
@@ -2531,13 +2539,16 @@
         
         if(random == 0){
             BonusDoubleViewController *sampleView = [[[BonusDoubleViewController alloc] initWithNibName:@"BonusDoubleViewController" bundle:nil] autorelease];
-            [self presentModalViewController:sampleView animated:NO];
+            [self presentViewController:sampleView animated:NO completion:^{
+            }];
         }else if(random == 2){
             BonusChestViewController *sampleView = [[[BonusChestViewController alloc] initWithNibName:@"BonusChestViewController" bundle:nil] autorelease];
-            [self presentModalViewController:sampleView animated:NO];
+            [self presentViewController:sampleView animated:NO completion:^{
+            }];
         }else{
             BonusViewController *sampleView = [[[BonusViewController alloc] initWithNibName:@"BonusViewController" bundle:nil] autorelease];
-            [self presentModalViewController:sampleView animated:NO];
+            [self presentViewController:sampleView animated:NO completion:^{
+            }];
         }
         
         bonusDoubleStatus = @"NO";
@@ -2546,10 +2557,12 @@
         
         if(random == 0){
             BonusChestViewController *sampleView = [[[BonusChestViewController alloc] initWithNibName:@"BonusChestViewController" bundle:nil] autorelease];
-            [self presentModalViewController:sampleView animated:NO];
+            [self presentViewController:sampleView animated:NO completion:^{
+            }];
         }else{
             BonusViewController *sampleView = [[[BonusViewController alloc] initWithNibName:@"BonusViewController" bundle:nil] autorelease];
-            [self presentModalViewController:sampleView animated:NO];
+            [self presentViewController:sampleView animated:NO completion:^{
+            }];
         }
     }
 }
@@ -2561,7 +2574,9 @@
     viewBonusWin.alpha = 1.0;
     [viewBonusWin setTransform:CGAffineTransformIdentity];
     [UIView commitAnimations];
-    [self performSelector:@selector(removeBigWin) withObject:nil afterDelay:3.5];
+    if (!isPushBonus) {
+        [self performSelector:@selector(removeBigWin) withObject:nil afterDelay:3.5];
+    }
     
 }
 -(void)removeBigWin{
@@ -4388,6 +4403,14 @@
 - (void)viewDidLoad{
     //NSLog(@"Game: %@", [CommonUtilities decryptString:@"game_name"]);
     [super viewDidLoad];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"1006" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(removeBigWin)
+                                                 name:@"1006"
+                                               object:nil];
+
+    
     [self sortLevelBar];
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){

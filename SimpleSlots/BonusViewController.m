@@ -87,7 +87,12 @@
 }
 
 - (IBAction)home:(id)sender{
-    [self dismissModalViewControllerAnimated:NO];
+ //   [self dismissModalViewControllerAnimated:NO];
+    [self dismissViewControllerAnimated:NO completion:^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"1006" object:nil userInfo:nil];
+        
+    }];
+
 }
 
 - (IBAction)coinsView:(id)sender{
@@ -118,8 +123,11 @@
     
     [CommonUtilities encryptString:[NSString stringWithFormat:@"%i", coins]:@"coins"];
     
-    [self dismissModalViewControllerAnimated:NO];
-    
+//    [self dismissModalViewControllerAnimated:NO];
+    [self dismissViewControllerAnimated:NO completion:^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"1006" object:nil userInfo:nil];
+
+    }];
     // sort win money
 }
 

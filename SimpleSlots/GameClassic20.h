@@ -51,6 +51,9 @@ typedef void(^SiwinCancelBlock)();
     int rateCounter;
     BOOL popupshow;
     Popup *obj;
+    
+    
+    BOOL isPushBonus;
 }
 
 - (IBAction)showPayTable:(id)sender;
