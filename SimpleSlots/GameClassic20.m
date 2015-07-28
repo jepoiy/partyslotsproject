@@ -2453,7 +2453,9 @@
         wonCounter = 0;
         
         dropCoinsTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(handleDropCoins) userInfo:nil repeats:YES];
+        isPushBonus = YES;
         [self showBigWin];
+        [self performSelector:@selector(pushBonus) withObject:nil afterDelay:1.4];
         // [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(removeBigWin) userInfo:nil repeats:NO];
         
         handleDropCoinsStatus = @"YES";
