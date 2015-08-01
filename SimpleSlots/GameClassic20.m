@@ -2442,17 +2442,42 @@
     optionLvl.text = [self returnLevel:XP];
     
     [self sortLevelBar];
-    
+
+    NSUserDefaults *pref = [NSUserDefaults standardUserDefaults];
+    int checkwinrandom =[[pref objectForKey:@"win_random"] intValue];
+    int winCounter = [[pref objectForKey:@"win_counter"] intValue];
+
     // manage win prefs
     if([showWinData count] > 0){
-        won = @"YES";
+     //   won = @"YES";
+                winCounter = winCounter + 1;
+        [pref setValue:[NSString stringWithFormat:@"%d",winCounter] forKey:@"win_counter"];
+        [pref synchronize];
+
+        if (winCounter >= checkwinrandom) {
+            won =@"YES";
+            [pref setValue:[NSString stringWithFormat:@"0"] forKey:@"win_counter"];
+            [pref synchronize];
+        }else{
+            won =@"NO";
+        }
+        
     }else{
         won = @"NO";
     }
     
     if([won isEqual:@"YES"]){
-        NSLog(@"You win show win data:%d",[showWinData count]);
+        NSLog(@"You win show win data:%@",showWinData);
         wonCounter = 0;
+        
+        //genrate random no between 1 to 10;
+        int lowerBound = 1;
+        int upperBound = 5;
+        int rndValue = lowerBound + arc4random() % (upperBound - lowerBound);
+        [pref setValue:[NSString stringWithFormat:@"%d",rndValue] forKey:@"win_random"];
+        [pref synchronize];
+        
+        
         
         dropCoinsTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(handleDropCoins) userInfo:nil repeats:YES];
         isPushBonus = YES;
@@ -2487,10 +2512,15 @@
     
     
 #pragma mark show Bonus if needed
+    
     if([kBonus isEqual:@"YES"]){
          //bonusCount = 40;
-        if(bonusCount >= 3){
+        if(bonusCount >= 3 ){
             //autoSpinAmountCounter = 0;
+            
+            
+            
+
             
             if([autoSpinStatus isEqual:@"YES"]){
                 [autoSpinTimer invalidate];
@@ -2509,9 +2539,6 @@
             
             isPushBonus = YES;
             [self showBigWin];
-            // [NSTimer scheduledTimerWithTimeInterval:3.5 target:self selector:@selector(removeBigWin) userInfo:nil repeats:NO];
-            
-            //NSLog(@"bonus game enabbled ");
             
             if([won isEqual:@"YES"]){
                 //NSLog(@"BONUS GAME & WIN");
@@ -2521,7 +2548,7 @@
             successBlock();
             [self performSelector:@selector(pushBonus) withObject:nil afterDelay:1.4];
             
-//            [NSTimer scheduledTimerWithTimeInterval:1.4 target:self selector:@selector(pushBonus) userInfo:nil repeats:NO];
+            
         }else{
             
 //            betAmount = 1;
@@ -4606,6 +4633,7 @@
 
 -(void)CloseForBonus:(NSNotification*)notifcation{
     [self dismissModalViewControllerAnimated:NO];
+    //[self resetWinBoxImages];
 }
 
 //
